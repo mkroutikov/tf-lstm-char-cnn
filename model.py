@@ -182,9 +182,9 @@ def loss_graph(logits, batch_size, num_unroll_steps):
 
     with tf.variable_scope('Loss'):
         targets = tf.placeholder(tf.int64, [batch_size, num_unroll_steps], name='targets')
-        targets = [tf.squeeze(x) for x in tf.split(1, num_unroll_steps, targets)]
+        target_list = [tf.squeeze(x) for x in tf.split(1, num_unroll_steps, targets)]
         
-        loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits, targets), name='loss')
+        loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits, target_list), name='loss')
     
     return adict(
         targets=targets,
