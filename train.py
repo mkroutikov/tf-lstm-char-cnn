@@ -147,6 +147,7 @@ def main(_):
         )
 
         ''' training starts here '''
+        best_valid_loss = None
         for epoch in range(FLAGS.max_epochs):
 
             avg_train_loss = 0.0
@@ -191,7 +192,7 @@ def main(_):
             print("train loss = %6.8f, perplexity = %6.8f" % (avg_train_loss, np.exp(avg_train_loss)))
             print("validation loss = %6.8f, perplexity = %6.8f" % (avg_valid_loss, np.exp(avg_valid_loss)))
 
-            save_as = '%s/epoch%03d_%.4f.model' % (FLAGS.train_dir, epoch, loss)
+            save_as = '%s/epoch%03d_%.4f.model' % (FLAGS.train_dir, epoch, avg_valid_loss)
             saver.save(session, save_as)
             print('Saved model', save_as)
 
@@ -201,6 +202,21 @@ def main(_):
                 tf.Summary.Value(tag="valid_loss", simple_value=avg_valid_loss)
             ])
             summary_writer.add_summary(summary, step)
+            
+            ''' decide if need to decay learning rate '''
+            if best_valid_loss is not None and np.exp(avg_valid_loss) > np.exp(best_valid_loss) - FLAGS.decay_when:
+                print('validation perplexity did not improve enough, decay learning rate')
+                current_learning_rate = session.run(train_model.learning_rate)
+                print('learning rate was:', current_learning_rate)
+                current_learning_rate *= FLAGS.learning_rate_decay
+                if current_learning_rate < 1.e-5:
+                    print('learning rate too small - stopping now')
+                    break
+
+                session.run(train_model.learning_rate.assign(current_learning_rate))
+                print('new learning rate is:', current_learning_rate)
+            else:
+                best_valid_loss = avg_valid_loss
         
 
 if __name__ == "__main__":
