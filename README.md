@@ -18,3 +18,11 @@ will train large model from Yoon Kim's paper.
 python eval.py --model model --dataset dataset
 ```
 evaluates this model on the given dataset
+
+## Model
+
+![model](https://cloud.githubusercontent.com/assets/14280777/17991383/13990c56-6b0c-11e6-8a9f-f4de07a6984f.png)
+
+`Model_1` graph is used for inference (computing validation loss and perplexity during training)
+
+`Model` graph is used for training.
