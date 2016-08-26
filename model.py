@@ -117,7 +117,6 @@ def tdnn(input_, kernels, kernel_features, scope='TDNN'):
 
 def inference_graph(char_vocab_size, word_vocab_size,
                     char_embed_size=15,
-                    word_embed_size=650, 
                     batch_size=20, 
                     num_highway_layers=2,
                     num_rnn_layers=2,
