@@ -139,8 +139,11 @@ class DataReader:
         ydata[:-1] = word_tensor[1:].copy()
         ydata[-1] = word_tensor[0].copy()
 
-        x_batches = char_tensor.reshape([-1, batch_size, num_unroll_steps, max_word_length])
-        y_batches = ydata.reshape([-1, batch_size, num_unroll_steps])
+        x_batches = char_tensor.reshape([batch_size, -1, num_unroll_steps, max_word_length])
+        y_batches = ydata.reshape([batch_size, -1, num_unroll_steps])
+        
+        x_batches = np.transpose(x_batches, axes=(1, 0, 2, 3))
+        y_batches = np.transpose(y_batches, axes=(1, 0, 2))
         
         self._x_batches = list(x_batches)
         self._y_batches = list(y_batches)
