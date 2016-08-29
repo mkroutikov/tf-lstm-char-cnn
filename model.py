@@ -3,6 +3,7 @@ from __future__ import division
 
 
 import tensorflow as tf
+from unittest.test.test_program import InitialisableProgram
 
 
 class adict(dict):
@@ -38,9 +39,9 @@ def linear(input_, output_size, scope=None):
 
     shape = input_.get_shape().as_list()
     if len(shape) != 2:
-        raise ValueError("Linear is expecting 2D arguments: %s" % str(shapes))
+        raise ValueError("Linear is expecting 2D arguments: %s" % str(shape))
     if not shape[1]:
-        raise ValueError("Linear expects shape[1] of arguments: %s" % str(shapes))
+        raise ValueError("Linear expects shape[1] of arguments: %s" % str(shape))
     input_size = shape[1]
 
     # Now the computation.
@@ -51,7 +52,7 @@ def linear(input_, output_size, scope=None):
     return tf.matmul(input_, tf.transpose(matrix)) + bias_term
 
 
-def highway(input_, size, num_layers=1, bias=-2, f=tf.nn.relu, scope='Highway'):
+def highway(input_, size, num_layers=1, bias=-2.0, f=tf.nn.relu, scope='Highway'):
     """Highway Network (cf. http://arxiv.org/abs/1505.00387).
   
     t = sigmoid(Wy + b)
@@ -105,7 +106,7 @@ def tdnn(input_, kernels, kernel_features, scope='TDNN'):
             # [batch_size x 1 x 1 x kernel_feature_size]
             pool = tf.nn.max_pool(tf.tanh(conv), [1, 1, reduced_length, 1], [1, 1, 1, 1], 'VALID')
     
-            layers.append(tf.squeeze(pool))
+            layers.append(tf.squeeze(pool, [1, 2]))
     
         if len(kernels) > 1:
             output = tf.concat(1, layers)
@@ -156,17 +157,20 @@ def inference_graph(char_vocab_size, word_vocab_size,
         if num_rnn_layers > 1:
             cell = tf.nn.rnn_cell.MultiRNNCell([cell] * num_rnn_layers, state_is_tuple=True)
         
-        input_cnn = tf.reshape(input_cnn, [batch_size, num_unroll_steps, -1])
-        input_cnn = [tf.squeeze(x) for x in tf.split(1, num_unroll_steps, input_cnn)]
+        initial_rnn_state = cell.zero_state(batch_size, dtype=tf.float32)
         
-        outputs, _ = tf.nn.rnn(cell, input_cnn, dtype=tf.float32)
+        input_cnn = tf.reshape(input_cnn, [batch_size, num_unroll_steps, -1])
+        input_cnn2 = [tf.squeeze(x, [1]) for x in tf.split(1, num_unroll_steps, input_cnn)]
+        
+        outputs, final_rnn_state = tf.nn.rnn(cell, input_cnn2, 
+                                         initial_state=initial_rnn_state, dtype=tf.float32)
         
         if dropout > 0.0:
             outputs = [tf.nn.dropout(x, keep_prob=1.-dropout) for x in outputs]
         
         # linear projection onto output (word) vocab
         logits = []
-        with tf.variable_scope('Word_Embedding') as scope:
+        with tf.variable_scope('WordEmbedding') as scope:
             for idx, output in enumerate(outputs):
                 if idx > 0:
                     scope.reuse_variables()
@@ -174,6 +178,11 @@ def inference_graph(char_vocab_size, word_vocab_size,
     
     return adict(
         input = input_,
+        input_embedded=input_embedded,
+        input_cnn=input_cnn,
+        initial_rnn_state=initial_rnn_state,
+        final_rnn_state=final_rnn_state,
+        rnn_outputs=outputs,
         logits = logits
     )
 
@@ -182,7 +191,7 @@ def loss_graph(logits, batch_size, num_unroll_steps):
 
     with tf.variable_scope('Loss'):
         targets = tf.placeholder(tf.int64, [batch_size, num_unroll_steps], name='targets')
-        target_list = [tf.squeeze(x) for x in tf.split(1, num_unroll_steps, targets)]
+        target_list = [tf.squeeze(x, [1]) for x in tf.split(1, num_unroll_steps, targets)]
         
         loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits, target_list), name='loss')
     
@@ -195,16 +204,15 @@ def loss_graph(logits, batch_size, num_unroll_steps):
 def training_graph(loss, learning_rate=1.0, max_grad_norm=5.0):
     ''' Builds training graph. '''
     global_step = tf.Variable(0, name='global_step', trainable=False)
-
+    
     with tf.variable_scope('SGD_Training'):
         # SGD learning parameter
         learning_rate = tf.Variable(learning_rate, trainable=False, name='learning_rate')
     
         # collect all trainable variables
         tvars = tf.trainable_variables()
-        
-        grads = [tf.clip_by_norm(grad, max_grad_norm) for grad in tf.gradients(loss, tvars)]
-    
+        grads, _ = tf.clip_by_global_norm(tf.gradients(loss, tvars), max_grad_norm)
+
         optimizer = tf.train.GradientDescentOptimizer(learning_rate)
         train_op = optimizer.apply_gradients(zip(grads, tvars), global_step=global_step)
 
