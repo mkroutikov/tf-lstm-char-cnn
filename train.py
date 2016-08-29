@@ -137,7 +137,7 @@ def main(_):
             print('Loaded model from', FLAGS.load_model, 'saved at global step', train_model.global_step.eval())
         else:
             tf.initialize_all_variables().run()
-            print('Created and initialized fresh model')
+            print('Created and initialized fresh model. Size:', model.model_size())
         
         summary_writer = tf.train.SummaryWriter(FLAGS.train_dir, graph=session.graph)
         
@@ -148,17 +148,27 @@ def main(_):
 
         ''' training starts here '''
         best_valid_loss = None
+        rnn_state = session.run(train_model.initial_rnn_state)
         for epoch in range(FLAGS.max_epochs):
 
             avg_train_loss = 0.0
             count = 0
             for x, y in train_reader.iter():
+                #for xx, yy in zip(x, y):
+                #    print(xx)
+                #    print(yy)
                 count += 1        
                 start_time = time.time()
-        
-                loss, _, step = session.run([train_model.loss, train_model.train_op, train_model.global_step], {
+                
+                loss, _, rnn_state, step = session.run([
+                    train_model.loss, 
+                    train_model.train_op, 
+                    train_model.final_rnn_state, 
+                    train_model.global_step,
+                ], {
                     train_model.input  : x,
-                    train_model.targets: y
+                    train_model.targets: y,
+                    train_model.initial_rnn_state: rnn_state
                 })
                 
                 avg_train_loss += 0.05 * (loss - avg_train_loss)
@@ -172,16 +182,23 @@ def main(_):
                                                             loss, np.exp(loss), 
                                                             time_elapsed))
 
+            continue
+
             # epoch done: time to evaluate  
             avg_valid_loss = 0.0
-            count = 0          
+            count = 0 
+            rnn_state = session.run(valid_model.initial_rnn_state)
             for x, y in valid_reader.iter():
                 count += 1        
                 start_time = time.time()
         
-                loss = session.run(valid_model.loss, {
+                loss, rnn_state = session.run([
+                    valid_model.loss, 
+                    valid_model.final_rnn_state
+                ], {
                     valid_model.input  : x,
-                    valid_model.targets: y
+                    valid_model.targets: y,
+                    valid_model.initial_rnn_state: rnn_state,
                 })
                 
                 if count % FLAGS.print_every == 0:
