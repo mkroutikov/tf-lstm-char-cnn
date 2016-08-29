@@ -91,7 +91,7 @@ def load_data(data_dir, max_word_length, eos='+'):
                     actual_max_word_length = max(actual_max_word_length, len(char_array))
                 
                 if eos:
-                    word_tokens[fname].append(word_vocab[eos])
+                    word_tokens[fname].append(word_vocab.feed(eos))
                     
                     char_array = [char_vocab.feed(c) for c in '{' + eos + '}']
                     char_tokens[fname].append(char_array)
