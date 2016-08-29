@@ -3,7 +3,6 @@ from __future__ import division
 
 
 import tensorflow as tf
-from unittest.test.test_program import InitialisableProgram
 
 
 class adict(dict):
