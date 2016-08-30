@@ -150,7 +150,7 @@ def inference_graph(char_vocab_size, word_vocab_size,
     
     ''' Finally, do LSTM '''
     with tf.variable_scope('LSTM'):
-        cell = tf.nn.rnn_cell.BasicLSTMCell(rnn_size, state_is_tuple=True)
+        cell = tf.nn.rnn_cell.BasicLSTMCell(rnn_size, state_is_tuple=True, forget_bias=0.0)
         if dropout > 0.0:
             cell = tf.nn.rnn_cell.DropoutWrapper(cell, input_keep_prob=1.-dropout)
         if num_rnn_layers > 1:
@@ -177,6 +177,7 @@ def inference_graph(char_vocab_size, word_vocab_size,
     
     return adict(
         input = input_,
+        char_embedding=char_embedding,
         input_embedded=input_embedded,
         input_cnn=input_cnn,
         initial_rnn_state=initial_rnn_state,

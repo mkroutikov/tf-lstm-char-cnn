@@ -59,10 +59,6 @@ def load_data(data_dir, max_word_length, eos='+'):
     
     word_vocab = Vocab()
     word_vocab.feed('|')  # <unk> is at index 0 in word vocab
-    if eos:
-        word_vocab.feed(eos)  # <eos> is at index 1 in word vocab
-        for c in eos:
-            char_vocab.feed(c)
     
     actual_max_word_length = 0
     

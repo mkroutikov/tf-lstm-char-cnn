@@ -140,11 +140,19 @@ def main(_):
             print('Created and initialized fresh model. Size:', model.model_size())
         
         summary_writer = tf.train.SummaryWriter(FLAGS.train_dir, graph=session.graph)
-        
+
         ''' take learning rate from CLI, not from saved graph '''
         session.run(
             tf.assign(train_model.learning_rate, FLAGS.learning_rate),
         )
+        
+        def clear_char_embedding_padding():
+            char_embedding = session.run(train_model.char_embedding)
+            char_embedding[0,:] = 0.0
+            session.run(tf.assign(train_model.char_embedding, char_embedding))
+            char_embedding = session.run(train_model.char_embedding)
+        
+        clear_char_embedding_padding()
 
         ''' training starts here '''
         best_valid_loss = None
@@ -171,6 +179,8 @@ def main(_):
                     train_model.initial_rnn_state: rnn_state
                 })
                 
+                clear_char_embedding_padding()
+                
                 avg_train_loss += 0.05 * (loss - avg_train_loss)
         
                 time_elapsed = time.time() - start_time
@@ -181,8 +191,6 @@ def main(_):
                                                             train_reader.length, 
                                                             loss, np.exp(loss), 
                                                             time_elapsed))
-
-            continue
 
             # epoch done: time to evaluate  
             avg_valid_loss = 0.0
@@ -234,7 +242,7 @@ def main(_):
                 print('new learning rate is:', current_learning_rate)
             else:
                 best_valid_loss = avg_valid_loss
-        
+
 
 if __name__ == "__main__":
     tf.app.run()
