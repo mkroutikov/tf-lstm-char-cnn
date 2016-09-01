@@ -110,7 +110,12 @@ def main(_):
                     num_unroll_steps=FLAGS.num_unroll_steps,
                     dropout=FLAGS.dropout)
             train_model.update(model.loss_graph(train_model.logits, FLAGS.batch_size, FLAGS.num_unroll_steps))
-            train_model.update(model.training_graph(train_model.loss, FLAGS.learning_rate, FLAGS.max_grad_norm))
+            
+            # scaling loss by FLAGS.num_unroll_steps effectively scales gradients by the same factor.
+            # we need it to reproduce how the original Torch code optimizes. Without this, our gradients will be
+            # much smaller (i.e. 35 times smaller) and to get system to learn we'd have to scale learning rate and max_grad_norm appropriately.
+            # Thus, scaling gradients so that this trainer is exactly compatible with the original
+            train_model.update(model.training_graph(train_model.loss * FLAGS.num_unroll_steps, FLAGS.learning_rate, FLAGS.max_grad_norm))
 
         # create saver before creating more graph nodes, so that we do not save any vars defined below      
         saver = tf.train.Saver(max_to_keep=50)
@@ -162,23 +167,21 @@ def main(_):
             avg_train_loss = 0.0
             count = 0
             for x, y in train_reader.iter():
-                #for xx, yy in zip(x, y):
-                #    print(xx)
-                #    print(yy)
                 count += 1        
                 start_time = time.time()
                 
-                loss, _, rnn_state, step = session.run([
-                    train_model.loss, 
+                loss, _, rnn_state, gradient_norm, step = session.run([
+                    train_model.loss,
                     train_model.train_op, 
-                    train_model.final_rnn_state, 
+                    train_model.final_rnn_state,
+                    train_model.global_norm, 
                     train_model.global_step,
                 ], {
                     train_model.input  : x,
                     train_model.targets: y,
                     train_model.initial_rnn_state: rnn_state
                 })
-                
+
                 clear_char_embedding_padding()
                 
                 avg_train_loss += 0.05 * (loss - avg_train_loss)
@@ -186,11 +189,12 @@ def main(_):
                 time_elapsed = time.time() - start_time
                 
                 if count % FLAGS.print_every == 0:
-                    print('%6d: %d [%5d/%5d], train_loss = %6.8f, train_perplexity=%6.7f time/batch = %.4fs' % (step, 
+                    print('%6d: %d [%5d/%5d], train_loss/perplexity = %6.8f/%6.7f secs/batch = %.4fs, grad.norm=%6.8f' % (step, 
                                                             epoch, count, 
                                                             train_reader.length, 
-                                                            loss, np.exp(loss), 
-                                                            time_elapsed))
+                                                            loss, np.exp(loss),
+                                                            time_elapsed,
+                                                            gradient_norm))
 
             # epoch done: time to evaluate  
             avg_valid_loss = 0.0
