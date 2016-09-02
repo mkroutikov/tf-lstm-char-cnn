@@ -43,9 +43,14 @@ generates random text from the loaded model
 
 
 ## Results
+
+![image](https://cloud.githubusercontent.com/assets/14280777/18205786/ec622ffa-70f1-11e6-810d-013bc39ff72f.png)
+
 Does **NOT** reproduce the original result. Training large character model yields test perplexity 86. Yoon Kim got to 79. Reason unknown.
 
 ```
+$ python train.py
+...
  33143: 24 [ 1295/ 1327], train_loss/perplexity = 3.91299558/50.0486526 secs/batch = 2.8760s, grad.norm=16.99129105
  33148: 24 [ 1300/ 1327], train_loss/perplexity = 4.05615807/57.7520065 secs/batch = 3.7823s, grad.norm=15.83820534
  33153: 24 [ 1305/ 1327], train_loss/perplexity = 4.15003490/63.4362144 secs/batch = 3.0995s, grad.norm=16.83547401
@@ -83,4 +88,20 @@ learning rate was: 0.00390625
 new learning rate is: 0.001953125
 ```
 
-![image](https://cloud.githubusercontent.com/assets/14280777/18205786/ec622ffa-70f1-11e6-810d-013bc39ff72f.png)
+```
+$ python evaluate.py --load_model cv/epoch024_4.4962.model
+reading train
+reading valid
+reading test
+
+actual longest token length is: 21
+size of word vocabulary: 10000
+size of char vocabulary: 51
+number of tokens in train: 929589
+number of tokens in valid: 73760
+number of tokens in test: 82430
+initialized test dataset reader
+Loaded model from cv/epoch024_4.4962.model saved at global step 33175
+test loss = 4.45860297, perplexity = 86.36676768
+test samples: 2340 time elapsed: 42.9746849537 time per one batch: 0.367304999604
+```
