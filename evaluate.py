@@ -99,10 +99,13 @@ def main(_):
                     kernel_features=eval(FLAGS.kernel_features),
                     num_unroll_steps=FLAGS.num_unroll_steps,
                     dropout=0)
+            m.update(model.loss_graph(m.logits, FLAGS.batch_size, FLAGS.num_unroll_steps))
+
+            global_step = tf.Variable(0, dtype=tf.int32, name='global_step')
 
         saver = tf.train.Saver()
         saver.restore(session, FLAGS.load_model)
-        print('Loaded model from', FLAGS.load_model, 'saved at global step', train_model.global_step.eval())
+        print('Loaded model from', FLAGS.load_model, 'saved at global step', global_step.eval())
 
         ''' training starts here '''
         rnn_state = session.run(m.initial_rnn_state)
@@ -110,7 +113,7 @@ def main(_):
         avg_loss = 0
         start_time = time.time()
         for x, y in test_reader.iter():
-            cost += 1
+            count += 1
             loss, rnn_state = session.run([
                 m.loss,
                 m.final_rnn_state
