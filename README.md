@@ -75,59 +75,21 @@ Reason for the TF failing to reproduce the original result is not clear. The onl
 
 ## Generating random text
 ```
-recorder $ N years ago to meet all kinds of london 's fledgling preclude
+default targets for <unk> may be settled at least half of minnesota 's N <unk> group and the company 's <unk> director of remains n't winning more than the national convenience and its own N N N million 's immediate deficits and other companies at least to buy $ N N N hours of the company officials who did n't immediately funded by the company microsystems
 
-machine tool tool exterior buying its debut + but the legitimacy of the company still be complained + but they take advantage of the government banks + since expected to make of the state police gear + the
+<unk> N <unk> in N pages for all the seismic public revenue disappointments
 
-from the nation 's
+it was a good news agency <unk> 's blessing equipment and discuss during the company and <unk> by N trillion <unk> and said john wilbur n. <unk> research services corp. N million of the massachusetts and <unk> downturn in N N million
 
-from N N N miles of letters of quantum 's resilience in washington
+but she added
 
-as a new york has been
+the company
 
-which had an analyst + by mounting the key + mazda 's
+democrat bush rubicam around N N who was <unk> which is described by <unk> <unk> talks
 
-in
+richard <unk> smith arabia <unk> and a cloud a corporation money to keep their own N N years ago to be <unk> and <unk> <unk> without its new jersey and bebear 's big board and stevenson corp. a lawyer
 
-every
+by contrast for instance about N N N N N N N years ago
 
-for the region headed by japanese companies from the hastily would belong to be filled with magna 's definitely identified financing for minnesota 's current expansion + as many of all of
-
-a reduction in a lot of the opposite with a remarkable buy-outs from
-
-air chips maxicare and deprived a head of america for example of
-
-by a third parties notified earlier this year 's
-
-with
-
-+
-
-treatment of the uninsured by
-
-+ but over the diversion to own to test and a
-
-+ mcdonald 's decision to be
-
-and the unique assets will the
-
-for this year forecast predicts to provide a
-
-management and the amount of market stability of soviet consumer metal markets + ralston international financial institutions are
-
-+ that it 's
-
-in private
-
-with the tramp and other
-
-+ in the culmination of newsweek became
-
-in a blueprint and
-
-successful stock bond corp. 's
-
-to solve petroleum co. rebel and confusion program trading for instance of limits on
-
-of N commissioned in the greater than N miles of the national year earlier this picture 
+and <unk> & gamble stock 's <unk> <unk> a model to preclude a 190-point homes are resolved from any cyclical deals with depressed finance as a provision and the national air lines of bikers were <unk> to conform to provide more than prompted the <unk> midday by physical <unk> of the kaiser & hedges by a pile during a toledo <unk> texas air lines in the company recently on the vaccine is n't the singapore acceptance of effective at very heavy damage to <unk> $ N million libel information that high rates
 ```
