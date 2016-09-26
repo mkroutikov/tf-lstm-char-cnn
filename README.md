@@ -72,3 +72,62 @@ Reason for the TF failing to reproduce the original result is not clear. The onl
 
 * TF uses float32, while Torch uses float64
 * Parameter initialization is (randomly) different
+
+## Generating random text
+```
+recorder $ N years ago to meet all kinds of london 's fledgling preclude
+
+machine tool tool exterior buying its debut + but the legitimacy of the company still be complained + but they take advantage of the government banks + since expected to make of the state police gear + the
+
+from the nation 's
+
+from N N N miles of letters of quantum 's resilience in washington
+
+as a new york has been
+
+which had an analyst + by mounting the key + mazda 's
+
+in
+
+every
+
+for the region headed by japanese companies from the hastily would belong to be filled with magna 's definitely identified financing for minnesota 's current expansion + as many of all of
+
+a reduction in a lot of the opposite with a remarkable buy-outs from
+
+air chips maxicare and deprived a head of america for example of
+
+by a third parties notified earlier this year 's
+
+with
+
++
+
+treatment of the uninsured by
+
++ but over the diversion to own to test and a
+
++ mcdonald 's decision to be
+
+and the unique assets will the
+
+for this year forecast predicts to provide a
+
+management and the amount of market stability of soviet consumer metal markets + ralston international financial institutions are
+
++ that it 's
+
+in private
+
+with the tramp and other
+
++ in the culmination of newsweek became
+
+in a blueprint and
+
+successful stock bond corp. 's
+
+to solve petroleum co. rebel and confusion program trading for instance of limits on
+
+of N commissioned in the greater than N miles of the national year earlier this picture 
+```
