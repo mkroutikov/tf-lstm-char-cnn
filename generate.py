@@ -97,6 +97,8 @@ def main(_):
             
             word = word_vocab.token(ix)
             if word == '|':  # EOS
+                print('<unk>', end=' ')
+            elif word == '+':
                 print('\n')
             else:
                 print(word, end=' ')
