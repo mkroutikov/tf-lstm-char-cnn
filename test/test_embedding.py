@@ -103,7 +103,7 @@ IE3 = np.array([
    [ 0.        ,  0.        ,  0.        ],
    [ 0.        ,  0.        ,  0.        ],
    [ 0.        ,  0.        ,  0.        ]],
-                
+
   [[ 0.03760753,  0.03413731, -0.01067527],
    [ 0.03299351, -0.00162511,  0.01352856],
    [ 0.0025036 , -0.02406038, -0.02044987],
@@ -127,7 +127,7 @@ IE3 = np.array([
    [ 0.        ,  0.        ,  0.        ],
    [ 0.        ,  0.        ,  0.        ],
    [ 0.        ,  0.        ,  0.        ]]
-                
+
 ])
 
 Y = np.array([[   2,    3,    4],
@@ -137,24 +137,24 @@ Y = np.array([[   2,    3,    4],
 
 
 class TestEmbedding(tf.test.TestCase):
-    
+
     def test(self):
-        
+
         batch_size = 4
         num_unroll_steps = 3
         char_vocab_size = 51
         max_word_length = 11
         char_embed_size = 3
-        
+
         _, _, word_data, char_data, _ = load_data('data/', max_word_length)
         dataset = char_data['train']
         self.assertEqual(dataset.shape, (929589, max_word_length))
-        
+
         reader = DataReader(word_data['train'], char_data['train'], batch_size=batch_size, num_unroll_steps=num_unroll_steps)
         for x, y in reader.iter():
             assert x.shape == (batch_size, num_unroll_steps, max_word_length)
             break
-        
+
         self.assertAllClose(X, x)
         self.assertAllClose(Y, y)
 
@@ -164,23 +164,22 @@ class TestEmbedding(tf.test.TestCase):
             ''' First, embed characters '''
             with tf.variable_scope('Embedding'):
                 char_embedding = tf.get_variable('char_embedding', [char_vocab_size, char_embed_size])
-            
+
                 # [batch_size x max_word_length, num_unroll_steps, char_embed_size]
                 input_embedded = tf.nn.embedding_lookup(char_embedding, input_)
-            
+
                 input_embedded = tf.reshape(input_embedded, [-1, max_word_length, char_embed_size])
-            
+
             session.run(tf.assign(char_embedding, EMBEDDING))
             ie = session.run(input_embedded, {
                 input_: x
             })
-            
+
             #print(x.shape)
             #print(np.transpose(x, (1, 0, 2)))
             #print(ie.shape)
             ie = ie.reshape([batch_size, num_unroll_steps, max_word_length, char_embed_size])
             ie = np.transpose(ie, (1, 0, 2, 3))
             #print(ie[0,:,:,:])
-            
+
             self.assertAllClose(IE3, ie[0,:,:,:])
-        

@@ -7,9 +7,9 @@ from model import linear
 
 
 class TestLinear(tf.test.TestCase):
-    
+
     def test(self):
-        
+
         with self.test_session() as sess:
 
             m = tf.constant(np.array([
@@ -18,7 +18,7 @@ class TestLinear(tf.test.TestCase):
             ], dtype=np.float32))
 
             l = linear(m, 4)
-            
+
             result = sess.run(l, {
                 'SimpleLinear/Matrix:0': np.array([
                     [1.0, 2.0],
@@ -33,7 +33,7 @@ class TestLinear(tf.test.TestCase):
                     3.0,
                 ]),
             })
-            
+
             self.assertAllClose(result, np.array([
                 [5.0, 6.0, 7.0, 8.0],
                 [2.0, 3.0, 4.0, 5.0],

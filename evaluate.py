@@ -45,19 +45,19 @@ def run_test(session, m, data, batch_size, num_steps):
     costs = 0.0
     iters = 0
     state = session.run(m.initial_state)
-  
+
     for step, (x, y) in enumerate(reader.dataset_iterator(data, batch_size, num_steps)):
         cost, state = session.run([m.cost, m.final_state], {
             m.input_data: x,
             m.targets: y,
             m.initial_state: state
         })
-        
+
         costs += cost
         iters += 1
 
     return costs / iters
-  
+
 
 def main(_):
     ''' Loads trained model and evaluates it on test split '''
@@ -65,22 +65,22 @@ def main(_):
     if FLAGS.load_model is None:
         print('Please specify checkpoint file to load model from')
         return -1
-    
+
     if not os.path.exists(FLAGS.load_model):
         print('Checkpoint file not found', FLAGS.load_model)
         return -1
-    
+
     word_vocab, char_vocab, word_tensors, char_tensors, max_word_length = \
         load_data(FLAGS.data_dir, FLAGS.max_word_length, eos=FLAGS.EOS)
-    
+
     test_reader = DataReader(word_tensors['test'], char_tensors['test'],
                               FLAGS.batch_size, FLAGS.num_unroll_steps)
-    
+
     print('initialized test dataset reader')
-    
+
     with tf.Graph().as_default(), tf.Session() as session:
 
-        # tensorflow seed must be inside graph        
+        # tensorflow seed must be inside graph
         tf.set_random_seed(FLAGS.seed)
         np.random.seed(seed=FLAGS.seed)
 
@@ -122,9 +122,9 @@ def main(_):
                 m.targets: y,
                 m.initial_rnn_state: rnn_state
             })
-            
+
             avg_loss += loss
-        
+
         avg_loss /= count
         time_elapsed = time.time() - start_time
 

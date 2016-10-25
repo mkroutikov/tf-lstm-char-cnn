@@ -31,7 +31,7 @@ Y = np.array([[   2,    3,    4],
        [  27,   48,  395]], dtype=np.int32)
 
 class TestRNN(tf.test.TestCase):
-    
+
     def model(self):
         m = model.inference_graph(char_vocab_size=51, word_vocab_size=10000,
                         char_embed_size=3, batch_size=4, num_highway_layers=0,
@@ -39,17 +39,17 @@ class TestRNN(tf.test.TestCase):
                         kernels= [2], kernel_features=[2], num_unroll_steps=3,
                         dropout=0.0)
         m.update(model.loss_graph(m.logits, batch_size=4, num_unroll_steps=3))
-        
+
         return m
-    
+
     def test(self):
-        
+
         with self.test_session() as sess:
 
             m = self.model()
-            
+
             num_unroll_steps=3
-            
+
             feed = {
                 'Embedding/char_embedding:0': EMBEDDING,
                 'TDNN/kernel_2/w:0': np.reshape(np.transpose(KERNEL_1_W), [1, 2, num_unroll_steps, 2]),
@@ -61,8 +61,8 @@ class TestRNN(tf.test.TestCase):
                 m.input:   X,
                 m.targets: Y,
             }
-            
+
             loss = sess.run(m.loss, feed)
 
-            print(loss)            
+            print(loss)
             assert False

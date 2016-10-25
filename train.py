@@ -52,19 +52,19 @@ def run_test(session, m, data, batch_size, num_steps):
     costs = 0.0
     iters = 0
     state = session.run(m.initial_state)
-  
+
     for step, (x, y) in enumerate(reader.dataset_iterator(data, batch_size, num_steps)):
         cost, state = session.run([m.cost, m.final_state], {
             m.input_data: x,
             m.targets: y,
             m.initial_state: state
         })
-        
+
         costs += cost
         iters += 1
 
     return costs / iters
-  
+
 
 def main(_):
     ''' Trains model from data '''
@@ -72,10 +72,10 @@ def main(_):
     if not os.path.exists(FLAGS.train_dir):
         os.mkdir(FLAGS.train_dir)
         print('Created training directory', FLAGS.train_dir)
-    
+
     word_vocab, char_vocab, word_tensors, char_tensors, max_word_length = \
         load_data(FLAGS.data_dir, FLAGS.max_word_length, eos=FLAGS.EOS)
-    
+
     train_reader = DataReader(word_tensors['train'], char_tensors['train'],
                               FLAGS.batch_size, FLAGS.num_unroll_steps)
 
@@ -84,12 +84,12 @@ def main(_):
 
     test_reader = DataReader(word_tensors['test'], char_tensors['test'],
                               FLAGS.batch_size, FLAGS.num_unroll_steps)
-    
+
     print('initialized all dataset readers')
-    
+
     with tf.Graph().as_default(), tf.Session() as session:
 
-        # tensorflow seed must be inside graph        
+        # tensorflow seed must be inside graph
         tf.set_random_seed(FLAGS.seed)
         np.random.seed(seed=FLAGS.seed)
 
@@ -110,14 +110,14 @@ def main(_):
                     num_unroll_steps=FLAGS.num_unroll_steps,
                     dropout=FLAGS.dropout)
             train_model.update(model.loss_graph(train_model.logits, FLAGS.batch_size, FLAGS.num_unroll_steps))
-            
+
             # scaling loss by FLAGS.num_unroll_steps effectively scales gradients by the same factor.
             # we need it to reproduce how the original Torch code optimizes. Without this, our gradients will be
             # much smaller (i.e. 35 times smaller) and to get system to learn we'd have to scale learning rate and max_grad_norm appropriately.
             # Thus, scaling gradients so that this trainer is exactly compatible with the original
             train_model.update(model.training_graph(train_model.loss * FLAGS.num_unroll_steps, FLAGS.learning_rate, FLAGS.max_grad_norm))
 
-        # create saver before creating more graph nodes, so that we do not save any vars defined below      
+        # create saver before creating more graph nodes, so that we do not save any vars defined below
         saver = tf.train.Saver(max_to_keep=50)
 
         ''' build graph for validation and testing (shares parameters with the training graph!) '''
@@ -143,20 +143,20 @@ def main(_):
         else:
             tf.initialize_all_variables().run()
             print('Created and initialized fresh model. Size:', model.model_size())
-        
+
         summary_writer = tf.train.SummaryWriter(FLAGS.train_dir, graph=session.graph)
 
         ''' take learning rate from CLI, not from saved graph '''
         session.run(
             tf.assign(train_model.learning_rate, FLAGS.learning_rate),
         )
-        
+
         def clear_char_embedding_padding():
             char_embedding = session.run(train_model.char_embedding)
             char_embedding[0,:] = 0.0
             session.run(tf.assign(train_model.char_embedding, char_embedding))
             char_embedding = session.run(train_model.char_embedding)
-        
+
         clear_char_embedding_padding()
 
         ''' training starts here '''
@@ -167,14 +167,14 @@ def main(_):
             avg_train_loss = 0.0
             count = 0
             for x, y in train_reader.iter():
-                count += 1        
+                count += 1
                 start_time = time.time()
-                
+
                 loss, _, rnn_state, gradient_norm, step = session.run([
                     train_model.loss,
-                    train_model.train_op, 
+                    train_model.train_op,
                     train_model.final_rnn_state,
-                    train_model.global_norm, 
+                    train_model.global_norm,
                     train_model.global_step,
                 ], {
                     train_model.input  : x,
@@ -183,41 +183,41 @@ def main(_):
                 })
 
                 clear_char_embedding_padding()
-                
+
                 avg_train_loss += 0.05 * (loss - avg_train_loss)
-        
+
                 time_elapsed = time.time() - start_time
-                
+
                 if count % FLAGS.print_every == 0:
-                    print('%6d: %d [%5d/%5d], train_loss/perplexity = %6.8f/%6.7f secs/batch = %.4fs, grad.norm=%6.8f' % (step, 
-                                                            epoch, count, 
-                                                            train_reader.length, 
+                    print('%6d: %d [%5d/%5d], train_loss/perplexity = %6.8f/%6.7f secs/batch = %.4fs, grad.norm=%6.8f' % (step,
+                                                            epoch, count,
+                                                            train_reader.length,
                                                             loss, np.exp(loss),
                                                             time_elapsed,
                                                             gradient_norm))
 
-            # epoch done: time to evaluate  
+            # epoch done: time to evaluate
             avg_valid_loss = 0.0
-            count = 0 
+            count = 0
             rnn_state = session.run(valid_model.initial_rnn_state)
             for x, y in valid_reader.iter():
-                count += 1        
+                count += 1
                 start_time = time.time()
-        
+
                 loss, rnn_state = session.run([
-                    valid_model.loss, 
+                    valid_model.loss,
                     valid_model.final_rnn_state
                 ], {
                     valid_model.input  : x,
                     valid_model.targets: y,
                     valid_model.initial_rnn_state: rnn_state,
                 })
-                
+
                 if count % FLAGS.print_every == 0:
                     print("\t> validation loss = %6.8f, perplexity = %6.8f" % (loss, np.exp(loss)))
                 avg_valid_loss += loss / valid_reader.length
 
-            print("at the end of epoch:", epoch)            
+            print("at the end of epoch:", epoch)
             print("train loss = %6.8f, perplexity = %6.8f" % (avg_train_loss, np.exp(avg_train_loss)))
             print("validation loss = %6.8f, perplexity = %6.8f" % (avg_valid_loss, np.exp(avg_valid_loss)))
 
@@ -231,7 +231,7 @@ def main(_):
                 tf.Summary.Value(tag="valid_loss", simple_value=avg_valid_loss)
             ])
             summary_writer.add_summary(summary, step)
-            
+
             ''' decide if need to decay learning rate '''
             if best_valid_loss is not None and np.exp(avg_valid_loss) > np.exp(best_valid_loss) - FLAGS.decay_when:
                 print('validation perplexity did not improve enough, decay learning rate')

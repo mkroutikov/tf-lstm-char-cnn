@@ -50,7 +50,7 @@ import model
   0.00309152 -0.01952825 -0.04142651  0.01618458 -0.0224176  -0.03141491
  -0.04748542  0.02265899 -0.02689984 -0.03372463  0.00532304  0.0238619
   0.03720967  0.01196872]
-  
+
 Torch TOP_C and TOP_H
 
 TOP_C:  0.01 *
@@ -211,28 +211,28 @@ next_h: [-0.00840437  0.00178187  0.00585398  0.00938162  0.00332717]
 
 
 class TestRNN(tf.test.TestCase):
-    
+
     def model(self):
         return model.inference_graph(char_vocab_size=51, word_vocab_size=5,
                         char_embed_size=3, batch_size=4, num_highway_layers=0,
                         num_rnn_layers=1, rnn_size=5, max_word_length=11,
                         kernels= [2], kernel_features=[2], num_unroll_steps=3,
                         dropout=0.0)
-    
+
     def test(self):
-        
+
         with self.test_session() as sess:
 
             m = self.model()
-            
+
             input_cnn = INPUT_CNN
-            
+
             rnn_outputs = sess.run(m.rnn_outputs, {
                 m.input_cnn: input_cnn,
                 'LSTM/RNN/BasicLSTMCell/Linear/Matrix:0': LSTM_W,
                 'LSTM/RNN/BasicLSTMCell/Linear/Bias:0': LSTM_B,
             })
-            
+
             self.assertAllClose(rnn_outputs, [
                 np.array([[-0.00840133,  0.00178184,  0.00585286,  0.00937691,  0.00332699],
                        [-0.00840504,  0.00177166,  0.00586006,  0.00935978,  0.00331423],

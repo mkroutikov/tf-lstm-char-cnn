@@ -50,7 +50,7 @@ import model
   0.00309152 -0.01952825 -0.04142651  0.01618458 -0.0224176  -0.03141491
  -0.04748542  0.02265899 -0.02689984 -0.03372463  0.00532304  0.0238619
   0.03720967  0.01196872]
-  
+
 Torch TOP_C and TOP_H
 
 TOP_C:  0.01 *
@@ -224,21 +224,21 @@ Y = np.array([[   2,    3,    4],
        [  27,   48,  395]], dtype=np.int32)
 
 class TestRNN(tf.test.TestCase):
-    
+
     def model(self):
         return model.inference_graph(char_vocab_size=51, word_vocab_size=10000,
                         char_embed_size=3, batch_size=4, num_highway_layers=0,
                         num_rnn_layers=1, rnn_size=5, max_word_length=11,
                         kernels= [2], kernel_features=[2], num_unroll_steps=3,
                         dropout=0.0)
-    
+
     def test(self):
-        
+
         with self.test_session() as sess:
 
             m = self.model()
             loss = model.loss_graph(m.logits, batch_size=4, num_unroll_steps=3)
-            
+
             rnn_outputs = [
                 np.array([[-0.00840133,  0.00178184,  0.00585286,  0.00937691,  0.00332699],
                        [-0.00840504,  0.00177166,  0.00586006,  0.00935978,  0.00331423],
@@ -253,20 +253,20 @@ class TestRNN(tf.test.TestCase):
                        [-0.01473146,  0.00307552,  0.01039554,  0.01653865,  0.00623778],
                        [-0.01472719,  0.00307848,  0.01041825,  0.01651621,  0.00621954]])
             ]
-            
+
             feed = {
                 'LSTM/WordEmbedding/SimpleLinear/Matrix:0': SOFTMAX_W,
                 'LSTM/WordEmbedding/SimpleLinear/Bias:0': SOFTMAX_B,
                 loss.targets: Y
             }
-            
+
             for o,r in zip(rnn_outputs, m.rnn_outputs):
                 feed[r] = o
 
             l = sess.run(loss.loss, feed)
 
-            print(l)            
-            
+            print(l)
+
             '''
 [[-0.00115102 -0.01835673  0.01088401  0.00553839 -0.02548739  0.00961501
   -0.04911561  0.04094783  0.01729541  0.04113884  0.0110002   0.03410089
@@ -316,6 +316,6 @@ class TestRNN(tf.test.TestCase):
   -0.04911336  0.04099251  0.01712332  0.04171955  0.01133605  0.03384664
   -0.02640661  0.01766078  0.03566112 -0.03659455 -0.01487602 -0.0170152
    0.03925106 -0.03213174]]
-            '''            
-            
+            '''
+
             assert False

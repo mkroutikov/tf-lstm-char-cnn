@@ -45,19 +45,19 @@ def main(_):
     if FLAGS.load_model is None:
         print('Please specify checkpoint file to load model from')
         return -1
-    
+
     if not os.path.exists(FLAGS.load_model):
         print('Checkpoint file not found', FLAGS.load_model)
         return -1
-    
+
     word_vocab, char_vocab, word_tensors, char_tensors, max_word_length = \
         load_data(FLAGS.data_dir, FLAGS.max_word_length, eos=FLAGS.EOS)
-    
+
     print('initialized test dataset reader')
-    
+
     with tf.Graph().as_default(), tf.Session() as session:
 
-        # tensorflow seed must be inside graph        
+        # tensorflow seed must be inside graph
         tf.set_random_seed(FLAGS.seed)
         np.random.seed(seed=FLAGS.seed)
 
@@ -94,7 +94,7 @@ def main(_):
             prob /= np.sum(prob)
             prob = prob.ravel()
             ix = np.random.choice(range(len(prob)), p=prob)
-            
+
             word = word_vocab.token(ix)
             if word == '|':  # EOS
                 print('<unk>', end=' ')
@@ -106,7 +106,7 @@ def main(_):
             char_input = np.zeros((1, 1, max_word_length))
             for i,c in enumerate('{' + word + '}'):
                 char_input[0,0,i] = char_vocab[c]
-        
+
             logits, state = session.run([m.logits, m.final_rnn_state],
                                          {m.input: char_input,
                                           m.initial_rnn_state: rnn_state})
