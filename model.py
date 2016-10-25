@@ -60,7 +60,7 @@ def highway(input_, size, num_layers=1, bias=-2.0, f=tf.nn.relu, scope='Highway'
     """
 
     with tf.variable_scope(scope):
-        for idx in xrange(num_layers):
+        for idx in range(num_layers):
             g = f(linear(input_, size, scope='highway_lin_%d' % idx))
 
             t = tf.sigmoid(linear(input_, size, scope='highway_gate_%d' % idx) + bias)
