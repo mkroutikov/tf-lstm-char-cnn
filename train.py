@@ -115,7 +115,8 @@ def main(_):
             # we need it to reproduce how the original Torch code optimizes. Without this, our gradients will be
             # much smaller (i.e. 35 times smaller) and to get system to learn we'd have to scale learning rate and max_grad_norm appropriately.
             # Thus, scaling gradients so that this trainer is exactly compatible with the original
-            train_model.update(model.training_graph(train_model.loss * FLAGS.num_unroll_steps, FLAGS.learning_rate, FLAGS.max_grad_norm))
+            train_model.update(model.training_graph(train_model.loss * FLAGS.num_unroll_steps,
+                    FLAGS.learning_rate, FLAGS.max_grad_norm))
 
         # create saver before creating more graph nodes, so that we do not save any vars defined below
         saver = tf.train.Saver(max_to_keep=50)
@@ -142,6 +143,7 @@ def main(_):
             print('Loaded model from', FLAGS.load_model, 'saved at global step', train_model.global_step.eval())
         else:
             tf.initialize_all_variables().run()
+            session.run(train_model.clear_char_embedding_padding)
             print('Created and initialized fresh model. Size:', model.model_size())
 
         summary_writer = tf.train.SummaryWriter(FLAGS.train_dir, graph=session.graph)
@@ -150,14 +152,6 @@ def main(_):
         session.run(
             tf.assign(train_model.learning_rate, FLAGS.learning_rate),
         )
-
-        def clear_char_embedding_padding():
-            char_embedding = session.run(train_model.char_embedding)
-            char_embedding[0,:] = 0.0
-            session.run(tf.assign(train_model.char_embedding, char_embedding))
-            char_embedding = session.run(train_model.char_embedding)
-
-        clear_char_embedding_padding()
 
         ''' training starts here '''
         best_valid_loss = None
@@ -170,19 +164,18 @@ def main(_):
                 count += 1
                 start_time = time.time()
 
-                loss, _, rnn_state, gradient_norm, step = session.run([
+                loss, _, rnn_state, gradient_norm, step, _ = session.run([
                     train_model.loss,
                     train_model.train_op,
                     train_model.final_rnn_state,
                     train_model.global_norm,
                     train_model.global_step,
+                    train_model.clear_char_embedding_padding
                 ], {
                     train_model.input  : x,
                     train_model.targets: y,
                     train_model.initial_rnn_state: rnn_state
                 })
-
-                clear_char_embedding_padding()
 
                 avg_train_loss += 0.05 * (loss - avg_train_loss)
 

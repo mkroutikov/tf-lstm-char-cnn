@@ -135,6 +135,13 @@ def inference_graph(char_vocab_size, word_vocab_size,
     with tf.variable_scope('Embedding'):
         char_embedding = tf.get_variable('char_embedding', [char_vocab_size, char_embed_size])
 
+        ''' this op clears embedding vector of first symbol (symbol at position 0, which is by convention the position
+        of the padding symbol). It can be used to mimic Torch7 embedding operator that keeps padding mapped to
+        zero embedding vector and ignores gradient updates. For that do the following in TF:
+        1. after parameter initialization, apply this op to zero out padding embedding vector
+        2. after each gradient update, apply this op to keep padding at zero'''
+        clear_char_embedding_padding = tf.scatter_update(char_embedding, [0], tf.constant(0.0, shape=[1, char_embed_size]))
+
         # [batch_size x max_word_length, num_unroll_steps, char_embed_size]
         input_embedded = tf.nn.embedding_lookup(char_embedding, input_)
 
@@ -177,7 +184,7 @@ def inference_graph(char_vocab_size, word_vocab_size,
 
     return adict(
         input = input_,
-        char_embedding=char_embedding,
+        clear_char_embedding_padding=clear_char_embedding_padding,
         input_embedded=input_embedded,
         input_cnn=input_cnn,
         initial_rnn_state=initial_rnn_state,
