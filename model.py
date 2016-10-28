@@ -15,9 +15,10 @@ class adict(dict):
 
 
 def conv2d(input_, output_dim, k_h, k_w, name="conv2d"):
-  with tf.variable_scope(name):
-    w = tf.get_variable('w', [k_h, k_w, input_.get_shape()[-1], output_dim])
-    b = tf.get_variable('b', [output_dim])
+    with tf.variable_scope(name):
+        w = tf.get_variable('w', [k_h, k_w, input_.get_shape()[-1], output_dim])
+        b = tf.get_variable('b', [output_dim])
+
     return tf.nn.conv2d(input_, w, strides=[1, 1, 1, 1], padding='VALID') + b
 
 
@@ -69,14 +70,6 @@ def highway(input_, size, num_layers=1, bias=-2.0, f=tf.nn.relu, scope='Highway'
             input_ = output
 
     return output
-
-
-def conv2d(input_, output_dim, k_h, k_w, name="conv2d"):
-    with tf.variable_scope(name):
-        w = tf.get_variable('w', [k_h, k_w, input_.get_shape()[-1], output_dim])
-        b = tf.get_variable('b', [output_dim])
-
-    return tf.nn.conv2d(input_, w, strides=[1, 1, 1, 1], padding='VALID') + b
 
 
 def tdnn(input_, kernels, kernel_features, scope='TDNN'):
