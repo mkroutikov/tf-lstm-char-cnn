@@ -73,6 +73,21 @@ Reason for the TF failing to reproduce the original result is not clear. The onl
 * TF uses float32, while Torch uses float64
 * Parameter initialization is (randomly) different
 
+### Training times
+
+Timings were recorded on AWS EC2 instancies:
+
+1. `c4.8xlarge` - 32 CPUs, no GPUs
+2. `g2.2xlarge` - 1 CPU, 1 GPU (K620)
+3. `p2.xlarge`  - 1 CPU, 1 GPU (K80)
+
+|   Timing        | `c4.8xlarge` | `g2.2xlarge` | `p2.xlarge` |
+|-----------------|--------------|--------------|-------------|
+| Secs per batch  | 0.98         | 2.85         | 0.32        |
+| Secs per epoch  | 1404         | 3779         | 428         |
+
+Takes 3 hours to complete training (25 epochs) on `p2.xlarge` machine
+
 ## Generating random text
 ```
 default targets for <unk> may be settled at least half of minnesota 's N <unk> group and the company 's <unk> director of remains n't winning more than the national convenience and its own N N N million 's immediate deficits and other companies at least to buy $ N N N hours of the company officials who did n't immediately funded by the company microsystems
