@@ -28,8 +28,8 @@ flags.DEFINE_integer('rnn_layers',      2,                              'number 
 flags.DEFINE_float  ('dropout',         0.5,                            'dropout. 0 = no dropout')
 
 # optimization
-flags.DEFINE_float  ('learning_rate',       1.0,  'starting learning rate')
 flags.DEFINE_float  ('learning_rate_decay', 0.5,  'learning rate decay')
+flags.DEFINE_float  ('learning_rate',       0.5,  'starting learning rate')
 flags.DEFINE_float  ('decay_when',          1.0,  'decay if validation perplexity does not improve by more than this much')
 flags.DEFINE_float  ('param_init',          0.05, 'initialize parameters at')
 flags.DEFINE_integer('num_unroll_steps',    35,   'number of timesteps to unroll for')
@@ -158,6 +158,7 @@ def main(_):
         rnn_state = session.run(train_model.initial_rnn_state)
         for epoch in range(FLAGS.max_epochs):
 
+            epoch_start_time = time.time()
             avg_train_loss = 0.0
             count = 0
             for x, y in train_reader.iter():
@@ -188,6 +189,8 @@ def main(_):
                                                             loss, np.exp(loss),
                                                             time_elapsed,
                                                             gradient_norm))
+
+            print('Epoch training time:', time.time()-epoch_start_time)
 
             # epoch done: time to evaluate
             avg_valid_loss = 0.0
