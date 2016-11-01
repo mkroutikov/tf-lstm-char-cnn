@@ -78,8 +78,8 @@ Reason for the TF failing to reproduce the original result is not clear. The onl
 Timings were recorded on AWS EC2 instancies:
 
 1. `c4.8xlarge` - 32 CPUs, no GPUs
-2. `g2.2xlarge` - 1 CPU, 1 GPU (K520)
-3. `p2.xlarge`  - 1 CPU, 1 GPU (K80)
+2. `g2.2xlarge` - 8 CPU, 1 GPU (K520)
+3. `p2.xlarge`  - 4 CPU, 1 GPU (K80)
 
 |   Timing        | `c4.8xlarge` | `g2.2xlarge` | `p2.xlarge` |
 |-----------------|--------------|--------------|-------------|
