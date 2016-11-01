@@ -96,4 +96,4 @@ and <unk> & gamble stock 's <unk> <unk> a model to preclude a 190-point homes ar
 
 ## Contributors
 
-Nicole (guanghuixu)
+Nicole (hejunqing)
