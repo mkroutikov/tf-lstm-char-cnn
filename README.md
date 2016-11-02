@@ -80,7 +80,7 @@ Here is the same configuration trained on K80 GPU (`p2.xlarge` AWS EC2 instance)
 
 | Learning rate  |  Train/Valid/Test loss  |  Train/Valid/Test perplexity  |
 |:--------------:|:-----------------------:|:------------------------------|
-| 0.5            | 4.000 / 4.432 /   ???   | 54.54 / 84.08 / **???**     |
+| 0.5            | 4.011 / 4.435 /  4.403  | 55.18 / 84.34 / 81.68         |
 
 
 ### Training times
