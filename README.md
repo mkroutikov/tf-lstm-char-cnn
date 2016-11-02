@@ -73,6 +73,16 @@ Reason for the TF failing to reproduce the original result is not clear. The onl
 * TF uses float32, while Torch uses float64
 * Parameter initialization is (randomly) different
 
+**Update 11/1/2016**
+The above experiments were run on `c4.8xlarge` AWS EC2 instance (no GPU, 32 CPUs).
+
+Here is the same configuration trained on K80 GPU (`p2.xlarge` AWS EC2 instance):
+
+| Learning rate  |  Train/Valid/Test loss  |  Train/Valid/Test perplexity  |
+|:--------------:|:-----------------------:|:------------------------------|
+| 0.5            | 4.000 / 4.432 /   ???   | 54.54 / 84.08 / **???**     |
+
+
 ### Training times
 
 Timings were recorded on AWS EC2 instancies:
