@@ -43,7 +43,7 @@ generates random text from the loaded model
 
 ### Results
 
-![image](https://cloud.githubusercontent.com/assets/14280777/18585742/bd288cd4-7be6-11e6-82fd-d0d4acf727c1.png)
+![training](https://cloud.githubusercontent.com/assets/14280777/20392288/24afe002-aca5-11e6-8729-edc3e4dccc55.png)
 
 | Learning rate  |  Train/Valid/Test loss  |  Train/Valid/Test perplexity  |
 |:--------------:|:-----------------------:|:------------------------------|
