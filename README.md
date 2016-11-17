@@ -47,7 +47,7 @@ generates random text from the loaded model
 
 | Learning rate  |  Train/Valid/Test loss  |  Train/Valid/Test perplexity  |
 |:--------------:|:-----------------------:|:------------------------------|
-| 1.0            | 3.815 / 4.407 / 4.370   | 35.40 / 82.02 / 79.00         |
+| 1.0            | 3.815 / 4.407 / 4.370   | 35.40 / 82.02 / **79.00**        |
 
 Note that model **DOES** reproduce the published result.
 
