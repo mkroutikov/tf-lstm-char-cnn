@@ -152,7 +152,7 @@ def inference_graph(char_vocab_size, word_vocab_size,
     with tf.variable_scope('LSTM'):
         cell = tf.nn.rnn_cell.BasicLSTMCell(rnn_size, state_is_tuple=True, forget_bias=0.0)
         if dropout > 0.0:
-            cell = tf.nn.rnn_cell.DropoutWrapper(cell, input_keep_prob=1.-dropout)
+            cell = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=1.-dropout)
         if num_rnn_layers > 1:
             cell = tf.nn.rnn_cell.MultiRNNCell([cell] * num_rnn_layers, state_is_tuple=True)
 
@@ -163,9 +163,6 @@ def inference_graph(char_vocab_size, word_vocab_size,
 
         outputs, final_rnn_state = tf.nn.rnn(cell, input_cnn2,
                                          initial_state=initial_rnn_state, dtype=tf.float32)
-
-        if dropout > 0.0:
-            outputs = [tf.nn.dropout(x, keep_prob=1.-dropout) for x in outputs]
 
         # linear projection onto output (word) vocab
         logits = []

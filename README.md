@@ -41,47 +41,15 @@ generates random text from the loaded model
 
 `Model` graph is used for training.
 
-## Experiments
-
-### Learning rate 1.0 (default)
-
-![image](https://cloud.githubusercontent.com/assets/14280777/18585742/bd288cd4-7be6-11e6-82fd-d0d4acf727c1.png)
-
-### Learning rate 0.5
-
-![image](https://cloud.githubusercontent.com/assets/14280777/18585850/6d207c6e-7be7-11e6-80a2-b48185d76b2c.png)
-
-### Learning rate 0.25
-
-![image](https://cloud.githubusercontent.com/assets/14280777/18585916/d9520d58-7be7-11e6-80df-3d400ae11325.png)
-
-(training was cancelled after 20 epochs, when learning rate started to collapse)
-
 ### Results
 
-| Learning rate  |  Train/Valid/Test loss  |  Train/Valid/Test perplexity  |
-|:--------------:|:-----------------------:|:------------------------------|
-| 1.0            | 4.036 / 4.496 / 4.459   | 56.58 / 89.68 / 86.37         |
-| 0.5            | 4.015 / 4.436 / 4.397   | 55.42 / 84.40 / **81.23**     |
-| 0.25           | 4.242 / 4.495 / 4.463   | 69.57 / 89.50 / 86.73         |
-
-Note that model **DOES NOT** reproduce the published result. Original Torch7 code does get to perplexity of 79 with learning rate 1.0.
-This code gets to 86 with the same parameters. Tweaking learning rate gets us to perplexity 81. Maybe more parameter search will make furhter improvement?
-
-Reason for the TF failing to reproduce the original result is not clear. The only differences between this model and model of Yoon Kim are:
-
-* TF uses float32, while Torch uses float64
-* Parameter initialization is (randomly) different
-
-**Update 11/1/2016**
-The above experiments were run on `c4.8xlarge` AWS EC2 instance (no GPU, 32 CPUs).
-
-Here is the same configuration trained on K80 GPU (`p2.xlarge` AWS EC2 instance):
+![training](https://cloud.githubusercontent.com/assets/14280777/20392288/24afe002-aca5-11e6-8729-edc3e4dccc55.png)
 
 | Learning rate  |  Train/Valid/Test loss  |  Train/Valid/Test perplexity  |
 |:--------------:|:-----------------------:|:------------------------------|
-| 0.5            | 4.011 / 4.435 /  4.403  | 55.18 / 84.34 / 81.68         |
+| 1.0            | 3.815 / 4.407 / 4.370   | 35.40 / 82.02 / **79.00**        |
 
+Note that model **DOES** reproduce the published result.
 
 ### Training times
 
@@ -100,25 +68,21 @@ Takes 3 hours to complete training (25 epochs) on `p2.xlarge` machine
 
 ## Generating random text
 ```
-default targets for <unk> may be settled at least half of minnesota 's N <unk> group and the company 's <unk> director of remains n't winning more than the national convenience and its own N N N million 's immediate deficits and other companies at least to buy $ N N N hours of the company officials who did n't immediately funded by the company microsystems
+default wo n't <unk> down to keep a bit investment bankers trust in the <unk> of the company and as a <unk> a ford 's bill and long-term in the promoting a huge administrative 
 
-<unk> N <unk> in N pages for all the seismic public revenue disappointments
+in N treasury secretary robert stein as far below the like a major bankers fannie mae of publicly under the <unk> from a retired newly merged by a <unk> the mackenzie <unk> <unk> N <unk> in N people profit at the tremor and the cuban <unk> and the <unk> and a real estate rate increases from the technique when it was the <unk> which mr. gillett <unk> and it 's financial services <unk> about $ N <unk> most of the transportation and <unk> mcalpine energy 
 
-it was a good news agency <unk> 's blessing equipment and discuss during the company and <unk> by N trillion <unk> and said john wilbur n. <unk> research services corp. N million of the massachusetts and <unk> downturn in N N million
+the mainframe 
 
-but she added
+though none of <unk> the <unk> <unk> democratic leader adams those in the purchase as <unk> far more than he <unk> <unk> buy <unk> when the dingell the <unk> and mr. <unk> is organized improvements of the difference between N N of the american a <unk> and <unk> <unk> costs of the root to endure to judge and no solution to the same <unk> in one much greater than the company 's <unk> to be named to settle of the <unk> by discouraging oils a <unk> <unk> the chicago 's osaka 's fate in new york like such research firm with double-digit level 
 
-the company
+the ad agency and <unk> in need to seismic of <unk> to hedge of with a one-hour sellers the <unk> tanks at least <unk> of the pediatric direct access to keep fasb policy claims against the wave of welcome who has an injury the <unk> s&ls will not as saying little more big board of the foreign currencies 
 
-democrat bush rubicam around N N who was <unk> which is described by <unk> <unk> talks
-
-richard <unk> smith arabia <unk> and a cloud a corporation money to keep their own N N years ago to be <unk> and <unk> <unk> without its new jersey and bebear 's big board and stevenson corp. a lawyer
-
-by contrast for instance about N N N N N N N years ago
-
-and <unk> & gamble stock 's <unk> <unk> a model to preclude a 190-point homes are resolved from any cyclical deals with depressed finance as a provision and the national air lines of bikers were <unk> to conform to provide more than prompted the <unk> midday by physical <unk> of the kaiser & hedges by a pile during a toledo <unk> texas air lines in the company recently on the vaccine is n't the singapore acceptance of effective at very heavy damage to <unk> $ N million libel information that high rates
+so far less king in the company 's <unk> while the book pieces
 ```
 
 ## Contributors
 
-[Nicole (hejunqing)](https://github.com/hejunqing)
+[Nicole](https://github.com/hejunqing)
+
+[David](https://github.com/pythonner)
