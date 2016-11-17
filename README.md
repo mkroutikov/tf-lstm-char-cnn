@@ -68,26 +68,21 @@ Takes 3 hours to complete training (25 epochs) on `p2.xlarge` machine
 
 ## Generating random text
 ```
-default targets for <unk> may be settled at least half of minnesota 's N <unk> group and the company 's <unk> director of remains n't winning more than the national convenience and its own N N N million 's immediate deficits and other companies at least to buy $ N N N hours of the company officials who did n't immediately funded by the company microsystems
+default wo n't <unk> down to keep a bit investment bankers trust in the <unk> of the company and as a <unk> a ford 's bill and long-term in the promoting a huge administrative 
 
-<unk> N <unk> in N pages for all the seismic public revenue disappointments
+in N treasury secretary robert stein as far below the like a major bankers fannie mae of publicly under the <unk> from a retired newly merged by a <unk> the mackenzie <unk> <unk> N <unk> in N people profit at the tremor and the cuban <unk> and the <unk> and a real estate rate increases from the technique when it was the <unk> which mr. gillett <unk> and it 's financial services <unk> about $ N <unk> most of the transportation and <unk> mcalpine energy 
 
-it was a good news agency <unk> 's blessing equipment and discuss during the company and <unk> by N trillion <unk> and said john wilbur n. <unk> research services corp. N million of the massachusetts and <unk> downturn in N N million
+the mainframe 
 
-but she added
+though none of <unk> the <unk> <unk> democratic leader adams those in the purchase as <unk> far more than he <unk> <unk> buy <unk> when the dingell the <unk> and mr. <unk> is organized improvements of the difference between N N of the american a <unk> and <unk> <unk> costs of the root to endure to judge and no solution to the same <unk> in one much greater than the company 's <unk> to be named to settle of the <unk> by discouraging oils a <unk> <unk> the chicago 's osaka 's fate in new york like such research firm with double-digit level 
 
-the company
+the ad agency and <unk> in need to seismic of <unk> to hedge of with a one-hour sellers the <unk> tanks at least <unk> of the pediatric direct access to keep fasb policy claims against the wave of welcome who has an injury the <unk> s&ls will not as saying little more big board of the foreign currencies 
 
-democrat bush rubicam around N N who was <unk> which is described by <unk> <unk> talks
-
-richard <unk> smith arabia <unk> and a cloud a corporation money to keep their own N N years ago to be <unk> and <unk> <unk> without its new jersey and bebear 's big board and stevenson corp. a lawyer
-
-by contrast for instance about N N N N N N N years ago
-
-and <unk> & gamble stock 's <unk> <unk> a model to preclude a 190-point homes are resolved from any cyclical deals with depressed finance as a provision and the national air lines of bikers were <unk> to conform to provide more than prompted the <unk> midday by physical <unk> of the kaiser & hedges by a pile during a toledo <unk> texas air lines in the company recently on the vaccine is n't the singapore acceptance of effective at very heavy damage to <unk> $ N million libel information that high rates
+so far less king in the company 's <unk> while the book pieces
 ```
 
 ## Contributors
 
-[Nicole (hejunqing)](https://github.com/hejunqing)
-[David Nadeau (pythonner)](https://github.com/pythonner)
+[Nicole](https://github.com/hejunqing)
+
+[David](https://github.com/pythonner)
