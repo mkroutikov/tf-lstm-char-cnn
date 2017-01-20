@@ -142,11 +142,11 @@ def main(_):
             saver.restore(session, FLAGS.load_model)
             print('Loaded model from', FLAGS.load_model, 'saved at global step', train_model.global_step.eval())
         else:
-            tf.initialize_all_variables().run()
+            tf.global_variables_initializer().run()
             session.run(train_model.clear_char_embedding_padding)
             print('Created and initialized fresh model. Size:', model.model_size())
 
-        summary_writer = tf.train.SummaryWriter(FLAGS.train_dir, graph=session.graph)
+        summary_writer = tf.summary.FileWriter(FLAGS.train_dir, graph=session.graph)
 
         ''' take learning rate from CLI, not from saved graph '''
         session.run(
