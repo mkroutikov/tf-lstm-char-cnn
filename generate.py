@@ -107,7 +107,7 @@ def main(_):
             for i,c in enumerate('{' + word + '}'):
                 char_input[0,0,i] = char_vocab[c]
 
-            logits, state = session.run([m.logits, m.final_rnn_state],
+            logits, rnn_state = session.run([m.logits, m.final_rnn_state],
                                          {m.input: char_input,
                                           m.initial_rnn_state: rnn_state})
             logits = np.array(logits)
