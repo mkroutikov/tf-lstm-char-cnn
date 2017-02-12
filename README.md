@@ -68,17 +68,33 @@ Takes 3 hours to complete training (25 epochs) on `p2.xlarge` machine
 
 ## Generating random text
 ```
-default wo n't <unk> down to keep a bit investment bankers trust in the <unk> of the company and as a <unk> a ford 's bill and long-term in the promoting a huge administrative 
+default charges during the straight summer of the collapse of it works that it <unk> to the u.s. is very <unk> 
 
-in N treasury secretary robert stein as far below the like a major bankers fannie mae of publicly under the <unk> from a retired newly merged by a <unk> the mackenzie <unk> <unk> N <unk> in N people profit at the tremor and the cuban <unk> and the <unk> and a real estate rate increases from the technique when it was the <unk> which mr. gillett <unk> and it 's financial services <unk> about $ N <unk> most of the transportation and <unk> mcalpine energy 
+mr. boyd 's remarks are crucial to the champion to a close <unk> in N he says 
 
-the mainframe 
+explains it 's only one of the many really identified 
 
-though none of <unk> the <unk> <unk> democratic leader adams those in the purchase as <unk> far more than he <unk> <unk> buy <unk> when the dingell the <unk> and mr. <unk> is organized improvements of the difference between N N of the american a <unk> and <unk> <unk> costs of the root to endure to judge and no solution to the same <unk> in one much greater than the company 's <unk> to be named to settle of the <unk> by discouraging oils a <unk> <unk> the chicago 's osaka 's fate in new york like such research firm with double-digit level 
+it did n't end a deal we do n't know what 's no longer viable 
 
-the ad agency and <unk> in need to seismic of <unk> to hedge of with a one-hour sellers the <unk> tanks at least <unk> of the pediatric direct access to keep fasb policy claims against the wave of welcome who has an injury the <unk> s&ls will not as saying little more big board of the foreign currencies 
+<unk> <unk> <unk> 's <unk> hearing his head 
 
-so far less king in the company 's <unk> while the book pieces
+nora more than a$ N million has had no control in N it would do that could win any new other <unk> corporate and real-estate <unk> a future number of names <unk> at telling an <unk> outside the international institution 
+
+the extensive approach is a real form of unpublished football <unk> as the <unk> bells on negotiation refund 
+
+in other words the others who paid $ N a figure 
+
+what 's really the <unk> who can use a vast hundred the transaction would give it a better use of the <unk> and 
+
+the demise of the topic is fatal than we can do anything that is like the change in reality says justice <unk> <unk> of <unk> & <unk> a direct mail marketing firm 
+
+when when lawyer <unk> <unk> <unk> as corporate crime remains a distant younger woman says i 've seen however an injection in the new york money fund 
+
+some hearings have detectors with <unk> have survived mr. achenbaum 's veto incorporated the <unk> delicate center which <unk> a heavy medium that lawyers call are confusing big inquiries for the forecasting two outlets to had the claims 
+
+the afghan people have a series that 's really heard to share legislation for <unk> without all their racial cosmetic ties 
+
+he is going to hold his ...
 ```
 
 ## Contributors
@@ -86,3 +102,5 @@ so far less king in the company 's <unk> while the book pieces
 [Nicole](https://github.com/hejunqing)
 
 [David](https://github.com/pythonner)
+
+[derluke](https://github.com/derluke)
