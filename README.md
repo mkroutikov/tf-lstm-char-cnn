@@ -41,6 +41,13 @@ generates random text from the loaded model
 
 `Model` graph is used for training.
 
+## Pre-trained model
+
+Here is a ZIP file containing model files (created with TF 0.12). This model was trained with the default parameters
+and acheved the accuracy of the published result.
+
+[Pre-trained model](https://drive.google.com/file/d/0ByNiaej1jA1MbkI0VElpRFpUc0E/view?usp=sharing) 80Mb
+
 ### Results
 
 ![training](https://cloud.githubusercontent.com/assets/14280777/20392288/24afe002-aca5-11e6-8729-edc3e4dccc55.png)
