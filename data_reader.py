@@ -143,7 +143,7 @@ class DataReader:
 
         self._x_batches = list(x_batches)
         self._y_batches = list(y_batches)
-        assert len(self._y_batches) == len(self._y_batches)
+        assert len(self._x_batches) == len(self._y_batches)
         self.length = len(self._y_batches)
         self.batch_size = batch_size
         self.num_unroll_steps = num_unroll_steps
