@@ -3,7 +3,7 @@
 Tensorflow port of Yoon Kim's [Torch7 code](https://github.com/yoonkim/lstm-char-cnn). See also similar project [here](https://github.com/carpedm20/lstm-char-cnn-tensorflow) that failed to reproduce Kim's results and was apparently abandoned by the author. Many pieces of code are borrowed from it.
 
 ## Installation
-You need tensorflow version 0.12 and python (obviously).
+You need tensorflow version 1.0 and python (obviously).
 
 ## Running
 
@@ -43,10 +43,10 @@ generates random text from the loaded model
 
 ## Pre-trained model
 
-Here is a ZIP file containing model files (created with TF 0.12). This model was trained with the default parameters
+Here is a ZIP file containing model files (created with TF 1.0). This model was trained with the default parameters
 and acheved the accuracy of the published result.
 
-[Pre-trained model](https://drive.google.com/file/d/0ByNiaej1jA1MbkI0VElpRFpUc0E/view?usp=sharing) 80Mb
+[Pre-trained model](https://drive.google.com/open?id=0B27Dn0k-PX-YQ0FwTm5qS2FQMXM) 60Mb
 
 ### Results
 
@@ -54,11 +54,11 @@ and acheved the accuracy of the published result.
 
 | Learning rate  |  Train/Valid/Test loss  |  Train/Valid/Test perplexity  |
 |:--------------:|:-----------------------:|:------------------------------|
-| 1.0            | 3.815 / 4.407 / 4.370   | 35.40 / 82.02 / **79.00**        |
+| 1.0            | 3.815 / 4.407 / 4.369   | 35.40 / 82.02 / **79.03**        |
 
 Note that model **DOES** reproduce the published result.
 
-### Training times
+### Training times (legacy, with TF 0.12)
 
 Timings were recorded on AWS EC2 instancies:
 
