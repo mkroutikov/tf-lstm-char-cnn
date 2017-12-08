@@ -92,10 +92,10 @@ def tdnn(input_, kernels, kernel_features, scope='TDNN'):
         for kernel_size, kernel_feature_size in zip(kernels, kernel_features):
             reduced_length = max_word_length - kernel_size + 1
 
-            # [batch_size x max_word_length x embed_size x kernel_feature_size]
+            # [batch_size*num_unroll_steps, 1, reduced_length, kernel_feature_size]
             conv = conv2d(input_, kernel_feature_size, 1, kernel_size, name="kernel_%d" % kernel_size)
 
-            # [batch_size x 1 x 1 x kernel_feature_size]
+            # [batch_size*num_unroll_steps, 1, 1, kernel_feature_size]
             pool = tf.nn.max_pool(tf.tanh(conv), [1, 1, reduced_length, 1], [1, 1, 1, 1], 'VALID')
 
             layers.append(tf.squeeze(pool, [1, 2]))
