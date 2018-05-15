@@ -155,7 +155,7 @@ def inference_graph(char_vocab_size, word_vocab_size,
             if dropout > 0.0:
                 cell = tf.contrib.rnn.DropoutWrapper(cell, output_keep_prob=1.-dropout)
             return cell
-        
+
         if num_rnn_layers > 1:
             cell = tf.contrib.rnn.MultiRNNCell([create_rnn_cell() for _ in range(num_rnn_layers)], state_is_tuple=True)
         else:
@@ -179,7 +179,7 @@ def inference_graph(char_vocab_size, word_vocab_size,
 
     return adict(
         input = input_,
-        clear_char_embedding_padding=clear_char_embedding_padding,
+        char_embedding=char_embedding,
         input_embedded=input_embedded,
         input_cnn=input_cnn,
         initial_rnn_state=initial_rnn_state,
@@ -203,7 +203,7 @@ def loss_graph(logits, batch_size, num_unroll_steps):
     )
 
 
-def training_graph(loss, learning_rate=1.0, max_grad_norm=5.0):
+def training_graph(loss, char_embedding, char_embed_size=15, learning_rate=1.0, max_grad_norm=5.0):
     ''' Builds training graph. '''
     global_step = tf.Variable(0, name='global_step', trainable=False)
 
@@ -217,6 +217,8 @@ def training_graph(loss, learning_rate=1.0, max_grad_norm=5.0):
 
         optimizer = tf.train.GradientDescentOptimizer(learning_rate)
         train_op = optimizer.apply_gradients(zip(grads, tvars), global_step=global_step)
+        with tf.control_dependencies([train_op]):
+            train_op = tf.scatter_update(char_embedding, [0], tf.constant(0.0, shape=[1, char_embed_size]))
 
     return adict(
         learning_rate=learning_rate,
@@ -244,7 +246,7 @@ if __name__ == '__main__':
         with tf.variable_scope('Model'):
             graph = inference_graph(char_vocab_size=51, word_vocab_size=10000, dropout=0.5)
             graph.update(loss_graph(graph.logits, batch_size=20, num_unroll_steps=35))
-            graph.update(training_graph(graph.loss, learning_rate=1.0, max_grad_norm=5.0))
+            graph.update(training_graph(graph.loss, graph.char_embedding, learning_rate=1.0, max_grad_norm=5.0))
 
         with tf.variable_scope('Model', reuse=True):
             inference_graph = inference_graph(char_vocab_size=51, word_vocab_size=10000)
